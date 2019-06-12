@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css"
+        integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background: #365161;
+        }
+
+        .gameWrap {
+            position: relative;
+            background: rgb(213, 250, 234);
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .vue {
+            position: absolute;
+            color: #41B883;
+            transition: 0.1s
+        }
+
+        .angular {
+            position: absolute;
+            font-size: 50px;
+            color: #DE1831;
+        }
+
+        .react {
+            position: absolute;
+            font-size: 50px;
+            color: #61DAFB;
+        }
+
+        .menuWrap {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            transition: 2s cubic-bezier(.7, .29, .21, .99);
+        }
+
+        .btn.btn-vue {
+            background: #41B883;
+            color: #365161;
+            transition: .5s
+        }
+
+        .btn.btn-vue:hover {
+            background: #365161;
+            color: #41B883;
+        }
+
+        .gameScoreWrap {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body class="d-flex justify-content-center align-items-center">
+
+
+    <div class="gameWrap" id="gameWrap" :style="{width:gameIcon*10+'px',height:gameIcon*10+'px'}">
+        <i class="vue fab fa-vuejs"
+            :style="{top:vueTop+'px',left:vueLeft+'px',fontSize:gameIcon+'px',opacity:vueOpacity}"></i>
+        <i class="angular fab fa-angular" :style="{top:angularTop+'px',left:angularLeft+'px',opacity:vueOpacity}"></i>
+        <i class="react fab fa-react" :style="{top:reactTop+'px',left:reactLeft+'px',opacity:vueOpacity}"></i>
+        <div class="menuWrap d-flex flex-column" id="menuWrap" :style="{top:menuTop+'%',left:'50%'}">
+            <h2 class="text-center">VUE RUNNER</h2>
+            <h5 class="text-center">by ShawnL</h5>
+            <button type="button" class="btn btn-vue" @click="gameStart">GAME START</button>
+        </div>
+        <div class="menuWrap d-flex flex-column" id="overmenuWrap" :style="{top:overmenuTop+'%',left:'50%'}">
+            <h4 class="text-center">SCORE: {{gameScore}}</h4>
+            <h4 class="text-center">TIME: {{gameTime}}</h4>
+            <button type="button" class="btn btn-vue" @click="gameRestart">RESTART</button>
+        </div>
+        <div class="gameScoreWrap" :style="{bottom:0}">
+            <div :style="{top:0,right:0,opacity:vueOpacity,transition:'0.5s'}">Score:{{gameScore}}
+            </div>
+            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">Time:{{gameTime}}
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+
+        var app = new Vue({
+            el: '#gameWrap',
+            data: {
+                gameIcon: 50,
+                vueTop: 0,
+                vueLeft: 0,
+                angularTop: 0,
+                angularLeft: 0,
+                reactTop: 0,
+                reactLeft: 0,
+                vueOpacity: 0,
+                movingSpeed: 300,
+                movingDirection: '',
+                menuTop: 50,
+                overmenuTop: 200,
+                gameState: 'menu',
+                gameTime: 0,
+                gameScore: 0
+            },
+            created: function () {
+                window.addEventListener("keypress", event => {
+                    this.vueMove(event)
+                })
+                setInterval(() => {
+                    if (this.gameState == 'gameStart') {
+                        this.gameScore += 5
+                    }
+                }, 500)
+                setInterval(() => {
+                    if (this.gameState == 'gameStart') {
+                        this.gameTime += 1
+                        switch (this.gameTime) {
+                            case 20:
+                                this.movingSpeed = 100
+                                break
+                            default:
+                                break
+                        }
+                    }
+                }, 1000)
+                setInterval(() => {
+
+                    switch (this.gameState) {
+                        case 'gameStart':
+                            if (this.vueTop == this.gameIcon * (-1) ||
+                                this.vueTop == this.gameIcon * 10 ||
+                                this.vueLeft == this.gameIcon * (-1) ||
+                                this.vueLeft == this.gameIcon * 10
+                            ) {
+                                this.movingDirection = 'stop'
+                                this.gameState = 'gameOver'
+                                this.vueOpacity = 0
+                                this.overmenuTop = 50
+                            } else {
+
+                                switch (this.movingDirection) {
+                                    case 'north':
+                                        this.vueTop -= this.gameIcon
+                                        break;
+                                    case 'east':
+                                        this.vueLeft -= this.gameIcon
+                                        break;
+                                    case 'south':
+                                        this.vueTop += this.gameIcon
+                                        break;
+                                    case 'west':
+                                        this.vueLeft += this.gameIcon
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            if ((this.vueLeft == this.angularLeft) && (this.vueTop == this.angularTop)
+                            ) {
+                                this.gameScore += 500
+                                this.angularPositionChange()
+                            }
+                            if ((this.vueLeft == this.reactLeft) && (this.vueTop == this.reactTop)
+                            ) {
+                                this.gameScore += 500
+                                this.reactPositionChange()
+                            }
+                            break;
+
+                    }
+
+
+                }, this.movingSpeed)
+            },
+            methods: {
+                gameStart: function () {
+                    this.menuTop = -100
+                    setTimeout(() => {
+                        this.gameState = 'gameStart'
+                        this.vueLeft = 0
+                        this.vueTop = 0
+                        this.angularTop = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.angularLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.reactTop = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.reactLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.vueOpacity = 1
+                        this.gameScore = 0
+                        this.gameTime = 0
+
+                    }, 1000)
+                },
+                gameRestart: function () {
+                    this.overmenuTop = 200
+                    setTimeout(() => {
+                        this.gameState = 'gameStart'
+                        this.vueLeft = 0
+                        this.vueTop = 0
+                        this.angularTop = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.angularLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.reactTop = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.reactLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                        this.vueOpacity = 1
+                        this.gameScore = 0
+                        this.gameTime = 0
+                    }, 1000)
+                },
+                vueMove: function (event) {
+                    switch (event.key) {
+                        case 'w':
+                            this.movingDirection = 'north'
+                            break;
+                        case 'a':
+                            this.movingDirection = 'east'
+                            break;
+                        case 's':
+                            this.movingDirection = 'south'
+                            break;
+                        case 'd':
+                            this.movingDirection = 'west'
+                            break;
+                        case 'Enter':
+                        case 'p':
+                            console.log('pause')
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                angularPositionChange: function () {
+                    this.angularTop = this.gameIcon * Math.floor(Math.random() * 10)
+                    this.angularLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                },
+                reactPositionChange: function () {
+                    this.reactTop = this.gameIcon * Math.floor(Math.random() * 10)
+                    this.reactLeft = this.gameIcon * Math.floor(Math.random() * 10)
+                },
+
+            },
+
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>
