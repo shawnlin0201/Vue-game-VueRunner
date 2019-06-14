@@ -93,6 +93,12 @@
             </div>
             <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">Time:{{gameTime}}
             </div>
+            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">a:{{alpha}}
+            </div>
+            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">b:{{beta}}
+            </div>
+            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">g :{{gamma}}
+            </div>
         </div>
 
     </div>
@@ -125,9 +131,17 @@
                 overmenuTop: 200,
                 gameState: 'menu',
                 gameTime: 0,
-                gameScore: 0
+                gameScore: 0,
+                alpha: 0,
+                beta: 0,
+                gamma: 0,
             },
             created: function () {
+                window.addEventListener('deviceorientation', function (event) {
+                    this.alpha = event.alpha;
+                    this.beta = event.beta;
+                    this.gamma = event.gamma;
+                }, false);
                 window.addEventListener("keypress", event => {
                     this.vueMove(event)
                 })
