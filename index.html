@@ -145,9 +145,16 @@
                             let preAlpha = Math.round(event.alpha);
                             let preBeta = Math.round(event.beta);
                             let preGamma = Math.round(event.gamma);
-                            this.alpha = Math.round(event.alpha);
-                            this.beta = Math.round(event.beta);
-                            this.gamma = Math.round(event.gamma);
+                            if ((preBeta - this.beta) > 5) {
+                                this.movingDirection = "north"
+                            }
+                            setInterval(() => {
+                                window.addEventListener('deviceorientation', event => {
+                                    this.alpha = Math.round(event.alpha);
+                                    this.beta = Math.round(event.beta);
+                                    this.gamma = Math.round(event.gamma);
+                                })
+                            }, 500)
                         })
                     }, 500)
 
