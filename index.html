@@ -139,15 +139,18 @@
                     test: '',
                 },
                 created: function () {
-                    window.addEventListener('deviceorientation', event => {
-                        this.test = 'yes';
-                        let preAlpha = Math.round(event.alpha);
-                        let preBeta = Math.round(event.beta);
-                        let preGamma = Math.round(event.gamma);
-                        this.alpha = Math.round(event.alpha);
-                        this.beta = Math.round(event.beta);
-                        this.gamma = Math.round(event.gamma);
-                    })
+                    setInterval(() => {
+                        window.addEventListener('deviceorientation', event => {
+                            this.test = 'yes';
+                            let preAlpha = Math.round(event.alpha);
+                            let preBeta = Math.round(event.beta);
+                            let preGamma = Math.round(event.gamma);
+                            this.alpha = Math.round(event.alpha);
+                            this.beta = Math.round(event.beta);
+                            this.gamma = Math.round(event.gamma);
+                        })
+                    }, 500)
+
                     window.addEventListener("keypress", event => {
                         this.vueMove(event)
                     })
