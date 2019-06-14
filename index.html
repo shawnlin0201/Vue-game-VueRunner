@@ -93,15 +93,6 @@
             </div>
             <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">Time:{{gameTime}}
             </div>
-            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">a:{{alpha}}
-            </div>
-            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">b:{{beta}}
-            </div>
-            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">g:{{gamma}}
-            </div>
-            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">it:{{test}}
-            </div>
-
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -141,9 +132,10 @@
                 created: function () {
                     window.addEventListener('deviceorientation', event => {
                         this.test = 'yes';
-                        this.alpha = event.alpha;
-                        this.beta = event.beta;
-                        this.gamma = event.gamma;
+                        this.alpha = Math.round(event.alpha);
+                        this.beta = Math.round(event.beta);
+                        this.gamma = Math.round(event.gamma);
+
                     })
                     window.addEventListener("keypress", event => {
                         this.vueMove(event)
