@@ -141,9 +141,12 @@
                 created: function () {
                     window.addEventListener('deviceorientation', event => {
                         this.test = 'yes';
-                        this.alpha = event.alpha;
-                        this.beta = event.beta;
-                        this.gamma = event.gamma;
+                        let preAlpha = Math.round(event.alpha);
+                        let preBeta = Math.round(event.beta);
+                        let preGamma = Math.round(event.gamma);
+                        this.alpha = Math.round(event.alpha);
+                        this.beta = Math.round(event.beta);
+                        this.gamma = Math.round(event.gamma);
                     })
                     window.addEventListener("keypress", event => {
                         this.vueMove(event)
