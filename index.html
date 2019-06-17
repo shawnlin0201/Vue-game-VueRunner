@@ -79,10 +79,14 @@
         <div class="menuWrap d-flex flex-column" id="menuWrap" :style="{top:menuTop+'%',left:'50%'}">
             <h2 class="text-center">VUE RUNNER</h2>
             <h5 class="text-center">by ShawnL</h5>
-            <h5 class="text-center">version:1.0</h5>
+            <h5 class="text-center">version:1.0(Testing)</h5>
             <button type="button" class="btn btn-vue" @click="gameStart">GAME START</button>
-            <p class="text-center mt-3">USE W,A,S,D to Move</p>
-            <p class="text-center">and avoid wall!</p>
+            <h6 class="text-center mt-3">USE W,A,S,D to Move</h6>
+            <h6 class="text-center">「框架如戰國時代一般，</h6>
+            <h6 class="text-center">今天你不把它吃了，</h6>
+            <h6 class="text-center">明天就會被他吃。」</h6>
+            <h6 class="text-center">在十秒內吃掉其他的框架！</h6>
+            <h6 class="text-center">小心不要撞到牆壁了！</h6>
         </div>
         <div class="menuWrap d-flex flex-column" id="overmenuWrap" :style="{top:overmenuTop+'%',left:'50%'}">
             <h4 class="text-center">SCORE: {{gameScore}}</h4>
@@ -100,7 +104,6 @@
             </div>
             <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">g:{{gamma}}
             </div>
-            <div :style="{top:'20px',right:0,opacity:vueOpacity,transition:'0.5s'}">it:{{test}}
             </div> -->
 
         </div>
@@ -137,27 +140,28 @@
                     alpha: 0,
                     beta: 0,
                     gamma: 0,
-                    test: '',
                 },
                 created: function () {
-                    setInterval(() => {
-                        window.addEventListener('deviceorientation', event => {
-                            this.test = 'yes';
-                            let preAlpha = Math.round(event.alpha);
-                            let preBeta = Math.round(event.beta);
-                            let preGamma = Math.round(event.gamma);
-                            if ((preBeta - this.beta) > 5) {
-                                this.movingDirection = "north"
-                            }
-                            setInterval(() => {
-                                window.addEventListener('deviceorientation', event => {
-                                    this.alpha = Math.round(event.alpha);
-                                    this.beta = Math.round(event.beta);
-                                    this.gamma = Math.round(event.gamma);
-                                })
-                            }, 500)
-                        })
-                    }, 500)
+                    //todo: 陀螺儀偵測
+                    //先抓取當前的數值設定為基準，接著再次抓取當前的數值與舊有數值比較
+                    //主要抓前後左右，
+                    // setInterval(() => {
+                    //     window.addEventListener('deviceorientation', event => {
+                    //         this.test = 'yes';
+                    //         let preAlpha = Math.round(event.alpha);
+
+                    //         if ((preBeta - this.beta) > 5) {
+                    //             this.movingDirection = "north"
+                    //         }
+                    //         setInterval(() => {
+                    //             window.addEventListener('deviceorientation', event => {
+                    //                 this.alpha = Math.round(event.alpha);
+                    //                 this.beta = Math.round(event.beta);
+                    //                 this.gamma = Math.round(event.gamma);
+                    //             })
+                    //         }, 500)
+                    //     })
+                    // }, 500)
 
                     window.addEventListener("keypress", event => {
                         this.vueMove(event)
@@ -176,6 +180,16 @@
                                     break
                                 default:
                                     break
+                            }
+                        }
+                    }, 1000)
+                    setInterval(() => {
+                        if (this.gameState == 'gameStart') {
+                            if (this.gameTime == 10) {
+                                this.movingDirection = 'stop'
+                                this.gameState = 'gameOver'
+                                this.vueOpacity = 0
+                                this.overmenuTop = 50
                             }
                         }
                     }, 1000)
