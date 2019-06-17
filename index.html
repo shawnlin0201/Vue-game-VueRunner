@@ -85,7 +85,7 @@
             <h6 class="text-center">「框架如戰國時代一般，</h6>
             <h6 class="text-center">今天你不把它吃了，</h6>
             <h6 class="text-center">明天就會被他吃。」</h6>
-            <h6 class="text-center">在十秒內吃掉其他的框架！</h6>
+            <h6 class="text-center">在20秒內吃掉其他的框架！</h6>
             <h6 class="text-center">小心不要撞到牆壁了！</h6>
         </div>
         <div class="menuWrap d-flex flex-column" id="overmenuWrap" :style="{top:overmenuTop+'%',left:'50%'}">
@@ -130,7 +130,7 @@
                     reactTop: 0,
                     reactLeft: 0,
                     vueOpacity: 0,
-                    movingSpeed: 300,
+                    movingSpeed: 120,
                     movingDirection: '',
                     menuTop: 50,
                     overmenuTop: 200,
@@ -185,7 +185,7 @@
                     }, 1000)
                     setInterval(() => {
                         if (this.gameState == 'gameStart') {
-                            if (this.gameTime == 10) {
+                            if (this.gameTime == 20) {
                                 this.movingDirection = 'stop'
                                 this.gameState = 'gameOver'
                                 this.vueOpacity = 0
